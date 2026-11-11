@@ -1,0 +1,19 @@
+# Local database and private incident media
+campus_safety.db
+campus_safety.db-*
+private_evidence/
+evidence_storage/
+
+# Local secrets and environment settings
+.env
+.env.*
+!.env.example
+
+# Python and editor artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+*.log
