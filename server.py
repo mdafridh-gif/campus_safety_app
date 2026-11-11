@@ -86,6 +86,11 @@ class Handler(BaseHTTPRequestHandler):
         try:
             u=self.auth(); q=parse_qs(urlparse(self.path).query)
             with connect() as c:
+                if path=="/api/location/classroom-photo":
+                    if u["role"]!="administrator":raise PermissionError("Administrator access required.")
+                    photo=ROOT/"assests"/"classroom.jpeg"
+                    if not photo.is_file():return self.send_json({"error":"Classroom photo is unavailable."},404)
+                    data=photo.read_bytes(); self.send_response(200); self.send_header("Content-Type","image/jpeg"); self.send_header("Content-Length",str(len(data))); self.send_header("Cache-Control","private, no-store"); self.send_header("X-Content-Type-Options","nosniff"); self.end_headers(); self.wfile.write(data); return
                 if path=="/api/me": return self.send_json({"user":u,"contacts":[rowdict(x) for x in c.execute("SELECT * FROM contacts WHERE is_active=1 ORDER BY priority")]})
                 if path=="/api/incidents":
                     terms=[]; vals=[]

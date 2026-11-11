@@ -17,3 +17,6 @@ venv/
 .idea/
 .vscode/
 *.log
+
+# Contains a recognizable classroom photo; keep local/private
+/assests/
