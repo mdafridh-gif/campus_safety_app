@@ -20,7 +20,7 @@ Local demo administrator account (password: `CampusSafe2026!`):
 | --- | --- |
 | Administrator | `admin@campus.edu` |
 
-Configure the primary call line with `SOS_PHONE=8531996611`. The app records that the campus call workflow was initiated and provides a phone link. A telephony provider must be integrated to place and track real calls.
+Configure the primary call line with `SOS_PHONE=8531996611`. Tapping SOS opens the device phone app with the campus number and creates the incident and call-workflow record. The phone app or operating system may require the student to confirm the call; placing calls without that confirmation requires a campus telephony provider.
 
 ## Included flows
 
