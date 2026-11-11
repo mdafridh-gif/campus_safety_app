@@ -69,7 +69,7 @@ class Handler(BaseHTTPRequestHandler):
     server_version="CampusSafety/1.0"
     def log_message(self,fmt,*args): print("%s - %s"%(self.address_string(),fmt%args))
     def send_json(self,data,status=200):
-        body=json.dumps(data,ensure_ascii=False).encode(); self.send_response(status); self.send_header("Content-Type","application/json; charset=utf-8"); self.send_header("Content-Length",str(len(body))); self.send_header("Cache-Control","no-store"); self.send_header("X-Content-Type-Options","nosniff"); self.send_header("Content-Security-Policy","default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'"); self.end_headers(); self.wfile.write(body)
+        body=json.dumps(data,ensure_ascii=False).encode(); self.send_response(status); self.send_header("Content-Type","application/json; charset=utf-8"); self.send_header("Content-Length",str(len(body))); self.send_header("Cache-Control","no-store"); self.send_header("X-Content-Type-Options","nosniff"); self.send_header("Content-Security-Policy","default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self'"); self.end_headers(); self.wfile.write(body)
     def body(self):
         n=int(self.headers.get("Content-Length",0))
         if n>22_000_000: raise ValueError("Request body is too large.")
@@ -236,7 +236,7 @@ class Handler(BaseHTTPRequestHandler):
     def static(self,path):
         allowed={"/":"index.html","/index.html":"index.html","/app.js":"app.js","/styles.css":"styles.css"}
         if path not in allowed:return self.send_json({"error":"Not found"},404)
-        p=ROOT/allowed[path]; b=p.read_bytes(); self.send_response(200); self.send_header("Content-Type",mimetypes.guess_type(p.name)[0] or "application/octet-stream"); self.send_header("Content-Length",str(len(b))); self.send_header("X-Content-Type-Options","nosniff"); self.send_header("Content-Security-Policy","default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'"); self.end_headers(); self.wfile.write(b)
+        p=ROOT/allowed[path]; b=p.read_bytes(); self.send_response(200); self.send_header("Content-Type",mimetypes.guess_type(p.name)[0] or "application/octet-stream"); self.send_header("Content-Length",str(len(b))); self.send_header("X-Content-Type-Options","nosniff"); self.send_header("Content-Security-Policy","default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'"); self.end_headers(); self.wfile.write(b)
 
 if __name__=="__main__":
     init_db(); print(f"Campus Safety is running at http://localhost:{PORT}"); ThreadingHTTPServer(("127.0.0.1",PORT),Handler).serve_forever()
